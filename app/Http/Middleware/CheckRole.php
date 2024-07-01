@@ -3,20 +3,15 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, ...$roles)
+    public function handle($request, Closure $next, $role)
     {
-        $user = $request->user();
-
-        // Verifica que el usuario esté autenticado y que tenga el rol adecuado
-        if ($user && $user->rol && in_array($user->rol->nombre_rol, $roles)) {
-            return $next($request);
+        if (!Auth::check() || Auth::user()->role_id != $role) {
         }
 
-        // Si el usuario no tiene el rol requerido, devuelve un error 403
-        abort(403, 'Acción no autorizada.');
+        return $next($request);
     }
 }

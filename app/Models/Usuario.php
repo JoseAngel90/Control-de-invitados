@@ -1,14 +1,21 @@
 <?php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
-    protected $table = 'usuario';
+    protected $table = 'users'; 
 
-    protected $primaryKey = 'usuario_id';
+    protected $primaryKey = 'id'; 
+
+    protected $fillable = [
+        'name', 'email', 'password', 'rol_id',
+    ];
+
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
 
     public function rol()
     {

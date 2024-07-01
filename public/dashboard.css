@@ -1,0 +1,66 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #BFBFBF;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    color: #FFFFFF;
+}
+
+header.admin {
+    background-color: #FF0000;
+}
+
+header.planeacion {
+    background-color: #006200;
+}
+
+header.vigilancia {
+    background-color: #BFBFBF;
+}
+
+header h2 {
+    margin: 0;
+    color: #FFFFFF;
+}
+
+header p {
+    margin: 0;
+    color: #FFFFFF;
+}
+
+header a {
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 0.5em 1em;
+    border: 1px solid #FFFFFF;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+header a:hover {
+    background-color: #FFFFFF;
+    color: #006200;
+}
+
+main {
+    flex: 1;
+    padding: 2em;
+    text-align: center;
+}

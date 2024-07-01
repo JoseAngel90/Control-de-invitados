@@ -12,6 +12,9 @@ class UsuariosSeeder extends Seeder
      */
     public function run()
 {
+
+    User::truncate();
+
     User::create([
         'name' => 'Administrador',
         'email' => 'admin@example.com',
