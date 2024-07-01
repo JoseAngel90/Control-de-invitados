@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>Welcome</h2>
+        <h2>Bienvenido</h2>
         <p>Bienvenido a la aplicación de control de invitados.</p>
         <a href="{{ url('/login') }}" class="login-link">Login</a>
     </div>
