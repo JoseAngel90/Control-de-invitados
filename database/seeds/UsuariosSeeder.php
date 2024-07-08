@@ -23,8 +23,8 @@ class UsuariosSeeder extends Seeder
     ]);
 
     User::create([
-        'name' => 'Área de Planeación',
-        'email' => 'planeacion@example.com',
+        'name' => 'Registrante',
+        'email' => 'registrante@example.com',
         'password' => bcrypt('contraseña'),
         'rol_id' => 2,
     ]);

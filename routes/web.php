@@ -13,6 +13,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/solicitudes', [DashboardController::class, 'showSolicitudes'])->name('solicitudes');
 });
 
 Route::get('/', function () {
