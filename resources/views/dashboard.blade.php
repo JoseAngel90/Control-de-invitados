@@ -1,6 +1,6 @@
+<!-- resources/views/dashboard.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,20 +14,17 @@
         body {
             font-family: 'Nunito', sans-serif;
         }
-
         #wrapper {
             display: flex;
             width: 100%;
             height: 100vh;
         }
-
         #sidebar {
             width: 250px;
             background: #FFFFFF;
             color: #802434;
             border-radius: 50px;
         }
-
         #sidebar .nav-link {
             color: #802434;
             transition: 0.3s;
@@ -35,33 +32,27 @@
             margin: 5px;
             padding: 10px;
         }
-
         #sidebar .nav-link:hover {
             background-color: #f8d7da;
             color: #dc3545;
         }
-
         #sidebar .nav-item.active .nav-link {
             background-color: #dc3545;
             color: white;
         }
-
         .sidebar-brand-icon img {
             width: 100%;
             height: auto;
             max-width: 150px;
         }
-
         #content-wrapper {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
-
         #content {
             flex: 1;
         }
-
         .navbar {
             background: red;
             border-radius: 50px;
@@ -70,18 +61,15 @@
             background-repeat: no-repeat;
             background-position: center center;
         }
-
         .navbar .nav-link {
             color: white;
         }
-
         .img-profile {
             width: 50px;
             height: 50px;
             object-fit: cover;
             border-radius: 50%;
         }
-
         .logout-link {
             color: #dc3545;
             cursor: pointer;
@@ -91,14 +79,12 @@
             display: block;
             border-top: 1px solid #f8d7da;
         }
-
         .logout-link:hover {
             background-color: #f8d7da;
             color: white;
         }
     </style>
 </head>
-
 <body>
     <div id="wrapper">
         <!-- Sidebar -->
@@ -118,13 +104,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">
+                    <a class="nav-link" href="#" id="usuariosLink">
                         <i class="fas fa-fw fa-user"></i>
                         Gestión de Usuarios
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="#" id="solicitudesLink">
                         <i class="fas fa-fw fa-file-alt"></i>
                         Solicitudes de Acceso
                     </a>
@@ -137,7 +123,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" id="solicitudesLink">
+                    <a class="nav-link" href="" id="solicitudesLink">
                         <i class="fas fa-fw fa-calendar"></i>
                         Solicitudes de Invitación
                     </a>
@@ -222,22 +208,38 @@
 
     <!-- AJAX script to load content dynamically -->
     <script>
-        $(document).ready(function () {
-            $('#solicitudesLink').click(function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: '{{ route("solicitudes") }}',
-                    type: 'GET',
-                    success: function (data) {
-                        $('#content').html(data);
-                    },
-                    error: function () {
-                        alert('Error loading the content.');
-                    }
-                });
-            });
+ $(document).ready(function () {
+    $('#solicitudesLink').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '{{ route("solicitudes") }}',
+            type: 'GET',
+            success: function (data) {
+                $('#content').html(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error details:', jqXHR.responseText);
+                alert('Error loading the content: ' + textStatus + ' - ' + errorThrown);
+            }
         });
+    });
+
+    $('#usuariosLink').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '{{ route("usuarios") }}',
+            type: 'GET',
+            success: function (data) {
+                $('#content').html(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error details:', jqXHR.responseText);
+                alert('Error loading the content: ' + textStatus + ' - ' + errorThrown);
+            }
+        });
+    });
+});
+
     </script>
 </body>
-
 </html>

@@ -3,9 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion de usuarios</title>
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="{{ asset('dashboard.css') }}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Estilos para la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .btn-actions {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .btn-actions:hover {
+            background-color: #0056b3;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        /* Estilos para posicionar el botón */
+        .add-user-button {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        /* Estilo para el modal */
+        .modal-dialog {
+            max-width: 400px;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="container">
+        <main>
+            <div class="add-user-button">
+                <button class="btn-actions" data-toggle="modal" data-target="#addUserModal">Agregar Usuario</button>
+            </div>
+            <h3>Gestión de Usuarios</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>John Doe</td>
+                        <td>johndoe@example.com</td>
+                        <td>Admin</td>
+                        <td>
+                            <button class="btn-actions">Habilitar/Deshabilitar</button>
+                            <button class="btn-actions btn-delete">Eliminar</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <!-- Modal Agregar Usuario -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Agregar Usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario para agregar usuario -->
+                    <form id="addUserForm">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rol">Rol</label>
+                            <select class="form-control" id="rol" name="rol" required>
+                                <option value="admin">Admin</option>
+                                <option value="registrante">Registrante</option>
+                                <option value="vigilante">Vigilante</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
