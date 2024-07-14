@@ -1,4 +1,3 @@
-<!-- resources/views/dashboard.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,12 +22,10 @@
             width: 250px;
             background: #FFFFFF;
             color: #802434;
-            border-radius: 50px;
         }
         #sidebar .nav-link {
             color: #802434;
             transition: 0.3s;
-            border-radius: 25px;
             margin: 5px;
             padding: 10px;
         }
@@ -55,7 +52,6 @@
         }
         .navbar {
             background: red;
-            border-radius: 50px;
             background-size: cover;
             filter: brightness(150%);
             background-repeat: no-repeat;
@@ -98,13 +94,13 @@
             <ul class="nav flex-column">
                 @if (Auth::user()->rol_id == 1)
                 <li class="nav-item">
-                    <a class="nav-link" href="">
+                    <a class="nav-link" href="" id="inicioLink">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         Inicio
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" id="usuariosLink">
+                    <a class="nav-link" href="" id="usuariosLink">
                         <i class="fas fa-fw fa-user"></i>
                         Gestión de Usuarios
                     </a>
@@ -117,34 +113,34 @@
                 </li>
                 @elseif (Auth::user()->rol_id == 2)
                 <li class="nav-item">
-                    <a class="nav-link" href="">
+                    <a class="nav-link" href="" id="inicioLink">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         Inicio
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="" id="solicitudesLink">
+                    <a class="nav-link" href="#" id="solicitudesLink">
                         <i class="fas fa-fw fa-calendar"></i>
                         Solicitudes de Invitación
                     </a>
                 </li>
                 @elseif (Auth::user()->rol_id == 3)
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="" id="inicioLink">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         Inicio
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="#" id="invitadosLink">
                         <i class="fas fa-fw fa-shield-alt"></i>
-                        Vigilancia
+                        Invitados
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">
                         <i class="fas fa-fw fa-exclamation-triangle"></i>
-                        Incidencias
+                        Reportes
                     </a>
                 </li>
                 @endif
@@ -208,38 +204,79 @@
 
     <!-- AJAX script to load content dynamically -->
     <script>
- $(document).ready(function () {
-    $('#solicitudesLink').click(function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: '{{ route("solicitudes") }}',
-            type: 'GET',
-            success: function (data) {
-                $('#content').html(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error('Error details:', jqXHR.responseText);
-                alert('Error loading the content: ' + textStatus + ' - ' + errorThrown);
+        $(document).ready(function () {
+            // Verificar que jQuery está cargado
+            if (typeof jQuery !== 'undefined') {
+                console.log('jQuery is loaded');
+            } else {
+                console.log('jQuery is not loaded');
             }
-        });
-    });
 
-    $('#usuariosLink').click(function (e) {
-        e.preventDefault();
-        $.ajax({
-            url: '{{ route("usuarios") }}',
-            type: 'GET',
-            success: function (data) {
-                $('#content').html(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error('Error details:', jqXHR.responseText);
-                alert('Error loading the content: ' + textStatus + ' - ' + errorThrown);
-            }
-        });
-    });
-});
+            $('#solicitudesLink').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ route("solicitudes") }}',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#content').html(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error details:', jqXHR.responseText);
+                        alert('Error loading the content: ' + textStatus + ' - ' + errorThrown);
+                    }
+                });
+            });
 
+            $('#usuariosLink').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ route("usuarios") }}',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#content').html(data);
+                        
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error details:', jqXHR.responseText);
+                        alert('Error loading the content: ' + textStatus + ' - ' + errorThrown);
+                    }
+                });
+            });
+
+            $('#invitadosLink').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ route("invitados") }}',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#content').html(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error('Error details:', jqXHR.responseText);
+                        alert('Error loading the content: ' + textStatus + ' - ' + errorThrown);
+                    }
+                });
+            });
+
+            // Reiniciar los eventos de jQuery después de cargar contenido
+            $(document).ajaxComplete(function () {
+                $('#solicitudesLink, #usuariosLink, #invitadosLink').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    let url = $(this).attr('href');
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function (data) {
+                            $('#content').html(data);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error('Error details:', jqXHR.responseText);
+                            alert('Error loading the content: ' + textStatus + ' - ' + errorThrown);
+                        }
+                    });
+                });
+            });
+        });
     </script>
 </body>
 </html>

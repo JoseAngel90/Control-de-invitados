@@ -58,10 +58,12 @@
 <body>
     <div class="container">
         <main>
-            <div class="add-user-button">
-                <button class="btn-actions" data-toggle="modal" data-target="#addUserModal">Agregar Usuario</button>
-            </div>
+
             <h3>Gestión de Usuarios</h3>
+            <div class="add-user-button">
+                <button class="btn-actions" data-toggle="modal" data-target="#addUserModal">
+                <i class="fas fa-plus"></i>Agregar Usuario</button>
+            </div>
             <table class="table">
                 <thead>
                     <tr>
