@@ -6,7 +6,6 @@
     <title>Dashboard Vigilancia</title>
     <link rel="stylesheet" href="{{ asset('dashboard.css') }}">
     <style>
-        /* Estilos específicos para las tarjetas */
         .card-container {
             display: flex;
             flex-wrap: wrap;
@@ -56,16 +55,14 @@
                 <div class="card danger">
                     <div class="card-header">Invitados Hoy</div>
                     <div class="card-body">
-                        <!-- Número de invitados programados para hoy -->
-         
+                        {{ $invitadosHoy }}
                     </div>
                 </div>
 
                 <div class="card success">
                     <div class="card-header">Invitados Pasados</div>
                     <div class="card-body">
-                        <!-- Número de invitados que ya pasaron -->
-           
+                        {{ $invitadosPasados }}
                     </div>
                 </div>
             </div>
@@ -74,16 +71,14 @@
                 <div class="card warning">
                     <div class="card-header">Próximos Invitados</div>
                     <div class="card-body">
-                        <!-- Número de invitados próximos -->
-             
+                        {{ $invitadosFuturos }}
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">Total Invitados</div>
                     <div class="card-body">
-                        <!-- Número total de invitados -->
-               
+                        {{ $totalInvitados }}
                     </div>
                 </div>
             </div>

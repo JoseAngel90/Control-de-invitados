@@ -89,6 +89,9 @@
             padding: 10px; /* Espacio interno del mensaje de éxito */
             margin-bottom: 15px; /* Margen inferior del mensaje de éxito */
         }
+
+
+        
     </style>
 </head>
 <body>
@@ -113,7 +116,6 @@
                     {{ session('status') }}
                 </div>
             @endif
-
             <div>
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" required>

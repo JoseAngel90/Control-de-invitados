@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Usuarios</title>
     <link rel="stylesheet" href="{{ asset('dashboard.css') }}">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         /* Estilos para la tabla */
@@ -43,13 +42,10 @@
         .btn-delete:hover {
             background-color: #c82333;
         }
-
-        /* Estilos para posicionar el botón */
         .add-user-button {
             text-align: right;
             margin-bottom: 10px;
         }
-        /* Estilo para el modal */
         .modal-dialog {
             max-width: 400px;
         }
@@ -74,17 +70,23 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    @foreach($usuarios as $usuario)
                     <tr>
-                        <td>John Doe</td>
-                        <td>johndoe@example.com</td>
-                        <td>Admin</td>
+                        <td>{{ $usuario->name }}</td>
+                        <td>{{ $usuario->email }}</td>
+                        @if ($usuario->rol_id==1)
+                            <td>Administrador</td>
+                        @elseif ($usuario->rol_id==2)
+                            <td>Registrante</td>
+                        @elseif ($usuario->rol_id==3)
+                            <td>Vigilante</td>
+                        @endif
                         <td>
                             <button class="btn-actions">Habilitar/Deshabilitar</button>
                             <button class="btn-actions btn-delete">Eliminar</button>
                         </td>
                     </tr>
-
+                    @endforeach
                 </tbody>
             </table>
         </main>
@@ -101,8 +103,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- Formulario para agregar usuario -->
-                    <form id="addUserForm">
+                    <form id="addUserForm" action="{{ route('usuarios.store') }}" method="POST">
+                        @csrf
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" required>
@@ -110,6 +112,10 @@
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Contraseña</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
                         </div>
                         <div class="form-group">
                             <label for="rol">Rol</label>
@@ -125,6 +131,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

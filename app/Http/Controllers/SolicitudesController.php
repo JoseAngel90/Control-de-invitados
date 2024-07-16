@@ -10,7 +10,7 @@ class SolicitudesController extends Controller
 {
     public function __construct()
     {
-        ini_set('memory_limit', '256M'); // Increase memory limit
+        ini_set('memory_limit', '256M');
     }
 
     public function index()

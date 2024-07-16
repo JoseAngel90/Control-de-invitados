@@ -86,7 +86,7 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Fecha</th>
+                        <th>Fecha y hora</th>
                         <th>Nombre</th>
                         <th>Estado</th>
                         <th>Acciones</th>
@@ -173,7 +173,7 @@
         </div>
     </div>
 
-<!-- Modal -->
+<!-- Modal detalles-->
 <div class="modal fade" id="solicitudModal" tabindex="-1" role="dialog" aria-labelledby="solicitudModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
