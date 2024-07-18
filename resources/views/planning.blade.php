@@ -1,31 +1,93 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Área de Planeación</title>
     <link rel="stylesheet" href="{{ asset('dashboard.css') }}">
+    <style>
+        /* Estilos específicos para las tarjetas */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .card {
+            width: calc(50% - 10px);
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid;
+        }
+
+        .card-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-body {
+            color: #555;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .card.success {
+            border-color: #28a745; /* Verde para solicitudes aprobadas */
+        }
+
+        .card.warning {
+            border-color: #ffc107; /* Amarillo para solicitudes pendientes */
+        }
+
+        .card.danger {
+            border-color: #dc3545; /* Rojo para solicitudes rechazadas */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header class="planeacion">
-            <h2>Bienvenido, {{ Auth::user()->name }}!</h2>
-            <div>
-                <a href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    Logout
-                </a>
-                <form id="logout-form" action="{{ url('/logout') }}" method="POST">
-                    @csrf
-                </form>
-            </div>
-        </header>
         <main>
-            <h3>Revisar Solicitudes de Acceso</h3>
-             Código para revisar, aprobar o rechazar solicitudes 
+            <h3>Resumen de Solicitudes</h3>
+
+            <div class="card-container">
+                <div class="card success">
+                    <div class="card-header">Aprobadas</div>
+                    <div class="card-body">
+                        <!-- Número de solicitudes aprobadas -->
+                 
+                    </div>
+                </div>
+
+                <div class="card warning">
+                    <div class="card-header">Pendientes</div>
+                    <div class="card-body">
+                        <!-- Número de solicitudes pendientes -->
+             
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-container">
+                <div class="card danger">
+                    <div class="card-header">Rechazadas</div>
+                    <div class="card-body">
+                        <!-- Número de solicitudes rechazadas -->
+                  
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">Del Día</div>
+                    <div class="card-body">
+                        <!-- Número de solicitudes del día -->
+                   
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 </body>
-</html> -->
-
-
-<h1>Holiwi planeador</h1>
+</html>
