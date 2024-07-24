@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <style>
         /* Estilos para la tabla */
         table {
@@ -239,15 +241,14 @@
                     </div>
                     <div class="tab-pane fade" id="status" role="tabpanel" aria-labelledby="status-tab">
                         <div class="text-center">
-                            <i class="fas fa-check-circle fa-5x text-success"></i>
-                            <p class="mt-2">Aprobada</p>
-                            @if(Auth::user()->rol_id == 1)             
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-success">Aprobar</button>
-                                <button type="button" class="btn btn-danger">Desaprobar</button>
-                            </div>
-                            @endif
+                            <!-- Este es el contenedor que se actualizará dinámicamente -->
                         </div>
+                        @if(Auth::user()->rol_id == 1)             
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success">Aprobar</button>
+                            <button type="button" class="btn btn-danger">Desaprobar</button>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -262,55 +263,111 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-       $(document).ready(function() {
-            $('#guestRequestForm').on('submit', function(event) {
-                event.preventDefault();
+$(document).ready(function() {
+    // Función para enviar una nueva solicitud
+    $('#guestRequestForm').on('submit', function(e) {
+        e.preventDefault(); // Evita que el formulario se envíe de la manera tradicional
 
-                $.ajax({
-                    url: $(this).attr('action'),
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        alert(response.success);
-                        location.reload();
-                    },
-                    error: function(xhr) {
-                        let errors = xhr.responseJSON.errors;
-                        let errorMessage = '';
-                        for (let key in errors) {
-                            errorMessage += errors[key].join(', ') + '\n';
-                        }
-                        alert(errorMessage);
-                    }
-                });
-            });
+        $.ajax({
+            url: '{{ route("solicitudes.store") }}', // Ruta para el método store
+            method: 'POST',
+            data: $(this).serialize(), // Serializa los datos del formulario
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Token CSRF para seguridad
+            },
+            success: function(response) {
+                alert(response.success); // Muestra el mensaje de éxito
+                $('#newGuestModal').modal('hide'); // Cierra el modal
+                location.reload(); // Recarga la página para actualizar la lista de solicitudes
+            },
+            error: function(xhr) {
+                alert('Error al enviar la solicitud.'); // Mensaje de error en caso de fallo
+            }
+        });
+    });
 
-            $('.btn-details').on('click', function() {
-                let solicitudId = $(this).data('id');
+    // Función para mostrar detalles de la solicitud
+    $('.btn-details').on('click', function() {
+        let solicitudId = $(this).data('id');
 
-                $.ajax({
-                    url: '{{ url("solicitudes") }}/' + solicitudId,
-                    method: 'GET',
-                    success: function(response) {
-                        console.log(response);
-                        $('#solicitudDetailsForm input[name="guest_name"]').val(response.guest_name);
-                        $('#solicitudDetailsForm input[name="visit_subject"]').val(response.visit_subject);
-                        $('#solicitudDetailsForm input[name="guest_origin"]').val(response.guest_origin);
-                        $('#solicitudDetailsForm input[name="attendee"]').val(response.attendee);
-                        $('#solicitudDetailsForm input[name="appointment_person"]').val(response.appointment_person);
-                        $('#solicitudDetailsForm input[name="arrival_time"]').val(response.arrival_time);
-                        $('#solicitudDetailsForm input[name="vehicle_details"]').val(response.vehicle_details || 'N/A');
+        $.ajax({
+            url: '{{ url("solicitudes") }}/' + solicitudId,
+            method: 'GET',
+            success: function(response) {
+                $('#solicitudDetailsForm input[name="guest_name"]').val(response.guest_name);
+                $('#solicitudDetailsForm input[name="visit_subject"]').val(response.visit_subject);
+                $('#solicitudDetailsForm input[name="guest_origin"]').val(response.guest_origin);
+                $('#solicitudDetailsForm input[name="attendee"]').val(response.attendee);
+                $('#solicitudDetailsForm input[name="appointment_person"]').val(response.appointment_person);
+                $('#solicitudDetailsForm input[name="arrival_time"]').val(response.arrival_time);
+                $('#solicitudDetailsForm input[name="vehicle_details"]').val(response.vehicle_details || 'N/A');
 
-                        $('#solicitudModal').modal('show');
-                    },
-                    error: function() {
-                        alert('Error al obtener los detalles de la solicitud.');
-                    }
-                });
-            });
+                let statusHtml = '';
+                if (response.status === 'Aprobado') {
+                    statusHtml = '<i class="fas fa-check-circle fa-5x text-success"></i><p class="mt-2">Aprobada</p>';
+                } else if (response.status === 'Pendiente') {
+                    statusHtml = '<i class="fas fa-clock fa-5x text-warning"></i><p class="mt-2">Pendiente</p>';
+                } else if (response.status === 'Rechazado') {
+                    statusHtml = '<i class="fas fa-times-circle fa-5x text-danger"></i><p class="mt-2">Rechazada</p>';
+                }
 
+                $('#status .text-center').html(statusHtml);
 
-        }); 
+                // Guardar el ID de la solicitud en los botones de aprobación y desaprobación
+                $('#solicitudModal .btn-success').data('id', solicitudId);
+                $('#solicitudModal .btn-danger').data('id', solicitudId);
+
+                $('#solicitudModal').modal('show');
+            },
+            error: function() {
+                alert('Error al obtener los detalles de la solicitud.');
+            }
+        });
+    });
+
+    // Función para aprobar la solicitud
+    $('#solicitudModal .btn-success').on('click', function() {
+        let solicitudId = $(this).data('id');
+
+        $.ajax({
+            url: '{{ url("solicitudes") }}/' + solicitudId + '/approve',
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                alert(response.success);
+                $('#solicitudModal').modal('hide');
+                location.reload();
+            },
+            error: function() {
+                alert('Error al aprobar la solicitud.');
+            }
+        });
+    });
+
+    // Función para desaprobar la solicitud
+    $('#solicitudModal .btn-danger').on('click', function() {
+        let solicitudId = $(this).data('id');
+
+        $.ajax({
+            url: '{{ url("solicitudes") }}/' + solicitudId + '/disapprove',
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                alert(response.success);
+                $('#solicitudModal').modal('hide');
+                location.reload();
+            },
+            error: function() {
+                alert('Error al desaprobar la solicitud.');
+            }
+        });
+    });
+});
+
 
     </script>
 

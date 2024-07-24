@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SolicitudesController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\InvitadosController;
 use App\Http\Controllers\DirectorController;
@@ -26,6 +27,8 @@ Route::get('/invitados', [DashboardController::class, 'showInvitados'])->name('i
 Route::get('/solicitudes', [SolicitudesController::class, 'index'])->name('solicitudes');
 Route::post('/solicitudes/store', [SolicitudesController::class, 'store'])->name('solicitudes.store');
 Route::get('/solicitudes/{id}', [SolicitudesController::class, 'show'])->name('solicitudes.show');
+Route::post('/solicitudes/{id}/approve', [SolicitudesController::class, 'approve'])->name('solicitudes.approve');
+Route::post('/solicitudes/{id}/disapprove', [SolicitudesController::class, 'disapprove'])->name('solicitudes.disapprove');
 
 Route::get('/planning', [PlanningController::class, 'index'])->name('planning');
 Route::get('/director', [DirectorController::class, 'index'])->name('director');
@@ -36,7 +39,14 @@ Route::get('/dashboard/security', [SecurityController::class, 'index'])->name('s
 
 Route::get('/usuarios', [UsuariosController::class,'index'])->name('usuarios.index');
 Route::post('/usuarios', [UsuariosController::class, 'store'])->name('usuarios.store');
+Route::post('/usuarios/updateStatus', [UsuariosController::class, 'updateStatus'])->name('usuarios.updateStatus');
+
 Route::get('/invitados', [InvitadosController::class,'index'])->name('invitados');
+Route::post('/check-in/{id}', [InvitadosController::class, 'checkIn']);
+Route::post('/cancel/{id}', [InvitadosController::class, 'cancel']);
+
+Route::get('/reporte', [ReporteController::class, 'index'])->name('reporte');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {

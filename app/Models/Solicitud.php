@@ -16,6 +16,7 @@ class Solicitud extends Model
         'arrival_time',
         'additional_guest',
         'vehicle_details',
+        'status',
     ];
 }
 

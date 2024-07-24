@@ -68,12 +68,14 @@
                         </thead>
                         <tbody>
                         @foreach($solicitudesHoy as $solicitud)
+                        @if($solicitud->status != "Pendiente")
                         <tr>
                             <td>{{ $solicitud->guest_name}}</td>
                             <td>{{ \Carbon\Carbon::parse($solicitud->arrival_time)->format('Y-m-d') }}</td>
                             <td>{{ \Carbon\Carbon::parse($solicitud->arrival_time)->format('h:i A') }}</td>
-                            <td>{{ $solicitud->estado }}</td>
+                            <td>{{ $solicitud->status }}</td>
                         </tr>
+                        @endif
                         @endforeach
                         </tbody>
                     </table>
