@@ -56,16 +56,14 @@
                 <div class="card success">
                     <div class="card-header">Aprobadas</div>
                     <div class="card-body">
-                        <!-- Número de solicitudes aprobadas -->
-                 
+                        {{ $aprobadas }}
                     </div>
                 </div>
 
                 <div class="card warning">
                     <div class="card-header">Pendientes</div>
                     <div class="card-body">
-                        <!-- Número de solicitudes pendientes -->
-             
+                        {{ $pendientes }}
                     </div>
                 </div>
             </div>
@@ -74,16 +72,14 @@
                 <div class="card danger">
                     <div class="card-header">Rechazadas</div>
                     <div class="card-body">
-                        <!-- Número de solicitudes rechazadas -->
-                  
+                        {{ $rechazadas }}
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">Del Día</div>
                     <div class="card-body">
-                        <!-- Número de solicitudes del día -->
-                   
+                        {{ $delDia }}
                     </div>
                 </div>
             </div>

@@ -19,7 +19,7 @@ class SolicitudesController extends Controller
             $solicitud->arrival_time = Carbon::parse($solicitud->arrival_time);
             return $solicitud;
         });
-
+        
         return view('solicitudes', compact('solicitudes'));
     }
 
@@ -57,6 +57,30 @@ class SolicitudesController extends Controller
         return response()->json($solicitud);
     }
     
-    
+    public function approve($id)
+    {
+        $solicitud = Solicitud::find($id);
+        if (!$solicitud) {
+            return response()->json(['error' => 'Solicitud no encontrada.'], 404);
+        }
+
+        $solicitud->status = 'Aprobado';
+        $solicitud->save();
+
+        return response()->json(['success' => 'Solicitud aprobada exitosamente.']);
+    }
+
+    public function disapprove($id)
+    {
+        $solicitud = Solicitud::find($id);
+        if (!$solicitud) {
+            return response()->json(['error' => 'Solicitud no encontrada.'], 404);
+        }
+
+        $solicitud->status = 'Rechazado';
+        $solicitud->save();
+
+        return response()->json(['success' => 'Solicitud desaprobada exitosamente.']);
+    }
     
 }

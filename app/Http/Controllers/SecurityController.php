@@ -12,6 +12,7 @@ class SecurityController extends Controller
     {
         $today = Carbon::today();
 
+        
         // Fetch guests for today
         $invitadosHoy = Solicitud::whereDate('arrival_time', $today)->count();
 

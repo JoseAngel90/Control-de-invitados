@@ -23,6 +23,7 @@ class CreateSolicitudTable extends Migration
             $table->datetime('arrival_time');
             $table->string('additional_guest')->nullable();
             $table->string('vehicle_details')->nullable();
+            $table->string('status')->default('Pendiente'); 
             $table->timestamps();
         });
     }

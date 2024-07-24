@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invitados del Día</title>
+    <title>Invitados Check-in o Cancelados</title>
     <link rel="stylesheet" href="{{ asset('dashboard.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -51,31 +51,24 @@
 <body>
     <div class="container">
         <main>
-            <h3>Invitados del Día</h3>
+            <h3>Invitados Check-in o Cancelados</h3>
             <table class="table">
                 <thead>
                     <tr>
                         <th>Nombre</th>
                         <th>Fecha de Llegada</th>
                         <th>Hora de Llegada</th>
-                        <th>Quien atiende</th>
-                        <th>Acciones</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($invitados as $invitado)
-                    @if ($invitado->status == "Aprobado")
-                    <tr data-id="{{ $invitado->id }}">
+                    <tr>
                         <td>{{ $invitado->guest_name }}</td>
                         <td>{{ \Carbon\Carbon::parse($invitado->arrival_time)->format('Y-m-d') }}</td>
                         <td>{{ \Carbon\Carbon::parse($invitado->arrival_time)->format('h:i A') }}</td>
-                        <td>{{ $invitado->attendee }}</td>
-                        <td>
-                            <button class="btn-checkin">Check-In</button>
-                            <button class="btn-cancel">Inasistencia</button>
-                        </td>
+                        <td>{{ $invitado->status }}</td>
                     </tr>
-                    @endif
                     @endforeach
                 </tbody>
             </table>
@@ -85,47 +78,5 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.btn-checkin').on('click', function() {
-                var row = $(this).closest('tr');
-                var id = row.data('id'); // Ensure each row has data-id attribute with the solicitud ID
-
-                $.ajax({
-                    url: '{{ url("check-in") }}/' + id,
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        alert(response.success);
-                        location.reload(); // Reload the page to see the changes
-                    },
-                    error: function(response) {
-                        alert(response.responseJSON.error);
-                    }
-                });
-            });
-            $('.btn-cancel').on('click', function() {
-                var row = $(this).closest('tr');
-                var id = row.data('id'); // Ensure each row has data-id attribute with the solicitud ID
-
-                $.ajax({
-                    url: '{{ url("cancel") }}/' + id,
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        alert(response.success);
-                        location.reload(); // Reload the page to see the changes
-                    },
-                    error: function(response) {
-                        alert(response.responseJSON.error);
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
